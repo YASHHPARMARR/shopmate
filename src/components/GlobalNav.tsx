@@ -29,9 +29,9 @@ export const GlobalNav: React.FC = () => {
   const navLinks = [
     { num: '01', label: 'COMPARE', to: '/compare' },
     { num: '02', label: 'BASKET', to: '/basket' },
-    { num: '03', label: 'SAVED', to: '/saved' },
-    { num: '04', label: 'FEATURES', to: '/features' },
-    { num: '05', label: 'STORY', to: '/how-it-works' }
+    { num: '03', label: 'LIVE STATUS', to: '/status', isLive: true },
+    { num: '04', label: 'SAVED', to: '/saved' },
+    { num: '05', label: 'HISTORY', to: '/history' }
   ];
 
   return (
@@ -55,7 +55,7 @@ export const GlobalNav: React.FC = () => {
           </Link>
 
           {/* Desktop Links */}
-          <nav className="hidden lg:flex items-center gap-8 text-[12px] font-mono-editorial uppercase tracking-wider text-[#78766f]">
+          <nav className="hidden lg:flex items-center gap-7 text-[12px] font-mono-editorial uppercase tracking-wider text-[#78766f]">
             {navLinks.map((item) => {
               const active = routerLocation.pathname === item.to;
               return (
@@ -67,6 +67,9 @@ export const GlobalNav: React.FC = () => {
                   }`}
                 >
                   <span className="text-[10px] opacity-60 font-semibold">{item.num}</span>
+                  {item.isLive && (
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse" />
+                  )}
                   <span>{item.label}</span>
                 </Link>
               );
@@ -145,8 +148,15 @@ export const GlobalNav: React.FC = () => {
               <span className="text-xs font-mono-editorial block text-[#78766f]">02 / BUILDER</span>
               YOUR BASKET
             </Link>
+            <Link to="/status" className="hover:text-purple-900 transition-colors flex items-center justify-between">
+              <div>
+                <span className="text-xs font-mono-editorial block text-purple-900 font-bold">03 / INTELLIGENCE</span>
+                LIVE STATUS
+              </div>
+              <span className="w-2 h-2 rounded-full bg-emerald-600 animate-pulse" />
+            </Link>
             <Link to="/saved" className="hover:text-purple-900 transition-colors">
-              <span className="text-xs font-mono-editorial block text-[#78766f]">03 / PERSISTENCE</span>
+              <span className="text-xs font-mono-editorial block text-[#78766f]">04 / PERSISTENCE</span>
               SAVED ORDERS
             </Link>
             <Link to="/history" className="hover:text-purple-900 transition-colors">

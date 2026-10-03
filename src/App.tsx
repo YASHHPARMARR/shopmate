@@ -19,6 +19,7 @@ import { AlertsPage } from './pages/AlertsPage';
 import { HowItWorksPage } from './pages/HowItWorksPage';
 import { FeaturesPage } from './pages/FeaturesPage';
 import { PreferencesPage } from './pages/PreferencesPage';
+import { StatusPage } from './pages/StatusPage';
 
 // Scroll to top helper on route transitions
 const ScrollToTop: React.FC = () => {
@@ -46,6 +47,7 @@ export const App: React.FC = () => {
               <Route path="/" element={<HomePage />} />
               <Route path="/compare" element={<ComparePage />} />
               <Route path="/basket" element={<BasketPage />} />
+              <Route path="/status" element={<StatusPage />} />
               <Route path="/product/:id" element={<ProductPage />} />
               <Route path="/saved" element={<SavedPage />} />
               <Route path="/history" element={<HistoryPage />} />
