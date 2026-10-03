@@ -1,0 +1,1165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="ShopMate — Compare your complete grocery basket across quick-commerce apps. One Basket. Every App. Best Price.">
+  <title>ShopMate — One Basket. Every App. Best Price.</title>
+
+  <!-- Preload font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <!-- AOS CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css">
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="css/motion.css">
+
+  <!-- Tailwind Play CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#5323e6',
+            'primary-container': '#6c47ff',
+            secondary: '#006c49',
+            'secondary-container': '#6cf8bb',
+            surface: '#f9f9ff',
+            'surface-dim': '#f0f0f6',
+            'on-surface': '#1a1a2e',
+            'on-surface-muted': '#64648c',
+            outline: '#d4d4e8',
+            blinkit: '#f59e0b',
+            zepto: '#9333ea',
+            instamart: '#f97316'
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif']
+          },
+          borderRadius: {
+            'sm2': '10px',
+            'md2': '16px',
+            'lg2': '24px',
+            'xl2': '32px'
+          }
+        }
+      }
+    };
+  </script>
+
+  <!-- GSAP + ScrollTrigger -->
+  <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+
+  <!-- AOS JS -->
+  <script defer src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+
+  <!-- Three.js import map -->
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"
+    }
+  }
+  </script>
+</head>
+<body class="bg-surface text-on-surface font-sans">
+
+  <!-- ===== HEADER ===== -->
+  <header id="site-header" class="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-xl border-b border-outline/30 transition-transform duration-300" style="transform: translateY(-100%);">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+      <!-- Logo -->
+      <a href="#" class="flex items-center gap-2 no-underline" id="logo-link">
+        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-primary-container flex items-center justify-center">
+          <span class="material-symbols-outlined text-white text-lg">shopping_basket</span>
+        </div>
+        <span class="text-lg font-extrabold tracking-tight text-on-surface">Shop<span class="text-primary">Mate</span></span>
+      </a>
+
+      <!-- Desktop Nav -->
+      <nav class="hidden md:flex items-center gap-6 text-sm font-medium text-on-surface-muted" aria-label="Main navigation">
+        <a href="#catalog-section" class="hover:text-primary transition-colors">Compare</a>
+        <a href="#how-it-works" class="hover:text-primary transition-colors">How It Works</a>
+        <a href="#features-section" class="hover:text-primary transition-colors">Features</a>
+        <a href="#saved-section" class="hover:text-primary transition-colors">Saved</a>
+      </nav>
+
+      <!-- Right side -->
+      <div class="flex items-center gap-3">
+        <!-- Motion toggle -->
+        <button id="motion-toggle" class="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium text-on-surface-muted border border-outline/40 hover:border-primary/30 transition-colors" aria-label="Toggle motion effects">
+          <span class="material-symbols-outlined text-base">animation</span>
+          <span id="motion-toggle-label">Motion</span>
+        </button>
+
+        <!-- Location -->
+        <button id="location-btn" class="flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-medium bg-surface-dim text-on-surface-muted hover:bg-primary/5 transition-colors" aria-label="Change location">
+          <span class="material-symbols-outlined text-base">location_on</span>
+          <span id="location-label">Ahmedabad</span>
+        </button>
+
+        <!-- Build basket CTA (desktop) -->
+        <a href="#catalog-section" class="hidden md:inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-primary to-primary-container text-white text-sm font-semibold shadow-md hover:shadow-lg transition-all magnetic-btn">
+          Build Basket
+        </a>
+
+        <!-- Mobile menu -->
+        <button id="mobile-menu-btn" class="md:hidden p-2 rounded-lg hover:bg-surface-dim transition-colors" aria-label="Open menu">
+          <span class="material-symbols-outlined">menu</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile nav drawer -->
+  <div id="mobile-nav" class="drawer-backdrop">
+    <div class="drawer-panel p-6" role="dialog" aria-label="Navigation menu">
+      <div class="flex items-center justify-between mb-8">
+        <span class="text-lg font-extrabold">Shop<span class="text-primary">Mate</span></span>
+        <button id="mobile-nav-close" class="p-2 rounded-lg hover:bg-surface-dim" aria-label="Close menu">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+      <nav class="flex flex-col gap-4 text-base font-medium">
+        <a href="#catalog-section" class="py-2 hover:text-primary mobile-nav-link">Compare</a>
+        <a href="#how-it-works" class="py-2 hover:text-primary mobile-nav-link">How It Works</a>
+        <a href="#features-section" class="py-2 hover:text-primary mobile-nav-link">Features</a>
+        <a href="#saved-section" class="py-2 hover:text-primary mobile-nav-link">Saved Baskets</a>
+      </nav>
+    </div>
+  </div>
+
+  <!-- ===== VALUE STRIP (Marquee) ===== -->
+  <div id="value-strip" class="marquee-strip bg-primary-container text-white py-2 text-sm font-medium mt-16" data-aos="fade-down">
+    <div class="marquee-track" id="marquee-track">
+      <!-- Populated by JS with live engine results -->
+      <span>One Basket • Every App • Best Price</span>
+      <span>🛒 ShopMate — Quick Commerce Decision Engine</span>
+      <span>Compare your complete basket, not just the item</span>
+      <span>One Basket • Every App • Best Price</span>
+      <span>🛒 ShopMate — Quick Commerce Decision Engine</span>
+      <span>Compare your complete basket, not just the item</span>
+    </div>
+  </div>
+
+  <!-- ===== HERO SECTION ===== -->
+  <section id="hero-section" class="relative min-h-[90vh] flex items-center overflow-visible">
+    <!-- Three.js canvas container -->
+    <div class="hero-canvas-container" id="hero-canvas-container">
+      <!-- Canvas inserted by hero-scene.js -->
+    </div>
+
+    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 py-20 w-full">
+      <div class="grid lg:grid-cols-2 gap-12 items-center">
+        <!-- Left: Copy -->
+        <div class="max-w-xl">
+          <div class="inline-flex items-center gap-2 mb-6">
+            <span class="demo-badge">
+              <span class="material-symbols-outlined text-xs" style="font-size:14px">science</span>
+              DEMO DATA
+            </span>
+            <span class="text-xs font-semibold tracking-wider uppercase text-primary/80">Quick-Commerce Decision Engine</span>
+          </div>
+
+          <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-[1.1] tracking-tight mb-6">
+            <span class="hero-line block" id="hero-line-1">One Basket.</span>
+            <span class="hero-line block gradient-shimmer" id="hero-line-2">Every App.</span>
+            <span class="hero-line block" id="hero-line-3">Best Price.</span>
+          </h1>
+
+          <p class="text-lg text-on-surface-muted leading-relaxed mb-8 hero-line" id="hero-desc">
+            Compare your complete grocery basket across quick-commerce apps and find the cheapest practical way to order.
+          </p>
+
+          <div class="flex flex-wrap gap-4 hero-line" id="hero-ctas">
+            <a href="#catalog-section" class="cta-pulse inline-flex items-center gap-2 px-7 py-3.5 rounded-xl bg-gradient-to-r from-primary to-primary-container text-white font-bold shadow-lg hover:shadow-xl transition-all magnetic-btn text-base">
+              <span class="material-symbols-outlined">shopping_basket</span>
+              Build My Basket
+            </a>
+            <a href="#how-it-works" class="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl border-2 border-outline/40 text-on-surface font-semibold hover:border-primary/40 hover:bg-primary/5 transition-all text-base">
+              See How It Works
+            </a>
+          </div>
+
+          <!-- Trust badges -->
+          <div class="flex flex-wrap gap-3 mt-8" id="hero-badges">
+            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-secondary/10 text-secondary text-xs font-semibold">
+              <span class="material-symbols-outlined text-sm">verified</span> Whole-basket comparison
+            </span>
+            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary/10 text-primary text-xs font-semibold">
+              <span class="material-symbols-outlined text-sm">calculate</span> True-cost engine
+            </span>
+            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-instamart/10 text-instamart text-xs font-semibold">
+              <span class="material-symbols-outlined text-sm">call_split</span> Smart split
+            </span>
+          </div>
+        </div>
+
+        <!-- Right: Hero comparison card -->
+        <div class="hero-float" id="hero-card">
+          <div class="bg-white rounded-2xl shadow-xl border border-outline/20 p-6 relative">
+            <div class="flex items-center justify-between mb-4">
+              <div>
+                <div class="text-xs font-semibold text-on-surface-muted uppercase tracking-wider mb-1">My Basket</div>
+                <div class="text-sm text-on-surface-muted" id="hero-basket-summary">4 products • 8 items</div>
+              </div>
+              <span class="demo-badge">DEMO DATA</span>
+            </div>
+
+            <!-- Platform bars -->
+            <div class="space-y-3 mb-5" id="hero-platform-bars">
+              <div class="flex items-center gap-3">
+                <span class="text-xs font-bold w-20 text-right" style="color:#f59e0b">Blinkit</span>
+                <div class="flex-1 bg-surface-dim rounded-full h-2 overflow-hidden">
+                  <div class="platform-bar h-full rounded-full" style="background:#f59e0b; width: 81%;" id="hero-bar-blinkit"></div>
+                </div>
+                <span class="text-sm font-bold tabular-nums w-14 text-right animate-num" id="hero-price-blinkit">₹203</span>
+              </div>
+              <div class="flex items-center gap-3">
+                <span class="text-xs font-bold w-20 text-right" style="color:#9333ea">Zepto</span>
+                <div class="flex-1 bg-surface-dim rounded-full h-2 overflow-hidden">
+                  <div class="platform-bar h-full rounded-full" style="background:#9333ea; width: 84%;" id="hero-bar-zepto"></div>
+                </div>
+                <span class="text-sm font-bold tabular-nums w-14 text-right animate-num" id="hero-price-zepto">₹210</span>
+              </div>
+              <div class="flex items-center gap-3">
+                <span class="text-xs font-bold w-20 text-right" style="color:#f97316">Instamart</span>
+                <div class="flex-1 bg-surface-dim rounded-full h-2 overflow-hidden">
+                  <div class="platform-bar h-full rounded-full" style="background:#f97316; width: 100%;" id="hero-bar-instamart"></div>
+                </div>
+                <span class="text-sm font-bold tabular-nums w-14 text-right animate-num" id="hero-price-instamart">₹250</span>
+              </div>
+            </div>
+
+            <!-- Winner banner -->
+            <div class="bg-gradient-to-r from-secondary/10 to-secondary-container/20 rounded-xl p-4 border border-secondary/20" id="hero-winner-banner">
+              <div class="flex items-center justify-between">
+                <div>
+                  <div class="flex items-center gap-2 mb-1">
+                    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-secondary text-white text-[10px] font-bold uppercase">Lowest Total</span>
+                  </div>
+                  <div class="text-lg font-extrabold" id="hero-winner-name">Blinkit — <span class="text-secondary" id="hero-winner-total">₹203</span></div>
+                </div>
+                <div class="text-right">
+                  <div class="text-xs text-on-surface-muted">You save</div>
+                  <div class="text-xl font-extrabold text-secondary animate-num" id="hero-savings">₹47</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== PROBLEM SECTION ===== -->
+  <section id="problem-section" class="py-20 sm:py-28 bg-white relative overflow-visible">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6">
+      <div class="text-center mb-16" data-aos="fade-up">
+        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold leading-tight mb-4">
+          Quick commerce is fast.<br><span class="text-primary">Comparison isn't.</span>
+        </h2>
+        <p class="text-on-surface-muted text-lg max-w-2xl mx-auto">You open three apps, search the same products, compare prices manually, then guess which is cheapest. That's <span class="font-bold text-on-surface animate-num" id="problem-switches">14</span> app switches just to buy groceries.</p>
+      </div>
+
+      <div class="grid md:grid-cols-[1fr_auto_1fr] gap-8 items-center">
+        <!-- Left: Problem cards -->
+        <div class="space-y-4" data-aos="fade-right">
+          <div class="problem-card-jitter bg-surface rounded-xl p-5 border border-outline/30 relative">
+            <span class="material-symbols-outlined blink-icon text-warning absolute top-3 right-3">warning</span>
+            <div class="flex items-center gap-3 mb-2">
+              <div class="w-8 h-8 rounded-lg bg-blinkit/15 flex items-center justify-center"><span class="text-sm font-bold" style="color:#f59e0b">B</span></div>
+              <span class="font-semibold text-sm">Open Blinkit</span>
+            </div>
+            <p class="text-xs text-on-surface-muted">Search "milk" → search "coke" → search "maggi" → note prices → close</p>
+          </div>
+          <div class="problem-card-jitter bg-surface rounded-xl p-5 border border-outline/30 relative" style="animation-delay: 0.1s">
+            <span class="material-symbols-outlined blink-icon text-warning absolute top-3 right-3">warning</span>
+            <div class="flex items-center gap-3 mb-2">
+              <div class="w-8 h-8 rounded-lg bg-zepto/15 flex items-center justify-center"><span class="text-sm font-bold" style="color:#9333ea">Z</span></div>
+              <span class="font-semibold text-sm">Open Zepto</span>
+            </div>
+            <p class="text-xs text-on-surface-muted">Search again → compare → forget Blinkit price → re-check → close</p>
+          </div>
+          <div class="problem-card-jitter bg-surface rounded-xl p-5 border border-outline/30 relative" style="animation-delay: 0.2s">
+            <span class="material-symbols-outlined blink-icon text-warning absolute top-3 right-3">warning</span>
+            <div class="flex items-center gap-3 mb-2">
+              <div class="w-8 h-8 rounded-lg bg-instamart/15 flex items-center justify-center"><span class="text-sm font-bold" style="color:#f97316">I</span></div>
+              <span class="font-semibold text-sm">Open Instamart</span>
+            </div>
+            <p class="text-xs text-on-surface-muted">Search again → compare fees → still unsure → give up and order anyway</p>
+          </div>
+        </div>
+
+        <!-- Arrow/Connector -->
+        <div class="flex justify-center" data-aos="zoom-in">
+          <svg width="80" height="200" viewBox="0 0 80 200" class="hidden md:block">
+            <path class="connector-line" d="M10 100 Q40 60 70 100" fill="none" stroke="#5323e6" stroke-width="2" stroke-dasharray="6 4"/>
+            <path class="connector-line" d="M10 100 Q40 140 70 100" fill="none" stroke="#5323e6" stroke-width="2" stroke-dasharray="6 4" style="animation-delay:0.3s"/>
+            <circle cx="40" cy="100" r="6" fill="#5323e6"/>
+            <text x="40" y="104" text-anchor="middle" fill="white" font-size="8" font-weight="bold">→</text>
+          </svg>
+          <div class="md:hidden text-center py-4">
+            <span class="material-symbols-outlined text-4xl text-primary">arrow_downward</span>
+          </div>
+        </div>
+
+        <!-- Right: ShopMate card -->
+        <div data-aos="fade-left">
+          <div class="bg-gradient-to-br from-primary/5 to-primary-container/10 rounded-xl p-6 border border-primary/20 relative">
+            <div class="flex items-center gap-3 mb-4">
+              <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-primary-container flex items-center justify-center">
+                <span class="material-symbols-outlined text-white">shopping_basket</span>
+              </div>
+              <div>
+                <div class="font-bold">ShopMate</div>
+                <div class="text-xs text-on-surface-muted">One comparison. One decision.</div>
+              </div>
+            </div>
+            <div class="space-y-3">
+              <div class="flex items-center gap-2 text-sm">
+                <svg class="w-5 h-5 flex-shrink-0" viewBox="0 0 24 24">
+                  <circle cx="12" cy="12" r="10" fill="none" stroke="#006c49" stroke-width="2"/>
+                  <path class="check-draw" d="M8 12 L11 15 L16 9" fill="none" stroke="#006c49" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span>One basket across all platforms</span>
+              </div>
+              <div class="flex items-center gap-2 text-sm">
+                <svg class="w-5 h-5 flex-shrink-0" viewBox="0 0 24 24">
+                  <circle cx="12" cy="12" r="10" fill="none" stroke="#006c49" stroke-width="2"/>
+                  <path class="check-draw" d="M8 12 L11 15 L16 9" fill="none" stroke="#006c49" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span>True cost with all fees included</span>
+              </div>
+              <div class="flex items-center gap-2 text-sm">
+                <svg class="w-5 h-5 flex-shrink-0" viewBox="0 0 24 24">
+                  <circle cx="12" cy="12" r="10" fill="none" stroke="#006c49" stroke-width="2"/>
+                  <path class="check-draw" d="M8 12 L11 15 L16 9" fill="none" stroke="#006c49" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span>Smart recommendation in seconds</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CATALOG & BASKET SECTION ===== -->
+  <section id="catalog-section" class="py-20 sm:py-28 bg-surface relative">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6">
+      <div class="text-center mb-12" data-aos="fade-up">
+        <h2 class="text-3xl sm:text-4xl font-extrabold mb-3">Stop comparing products.<br><span class="text-primary">Start comparing baskets.</span></h2>
+        <p class="text-on-surface-muted max-w-xl mx-auto">Build your basket, and we'll compare the total cost across every platform — fees, promos, delivery and all.</p>
+      </div>
+
+      <div class="grid lg:grid-cols-[1fr_380px] gap-8 items-start">
+        <!-- Products grid -->
+        <div>
+          <!-- QuickCommerce Live API Control Bar -->
+          <div class="mb-5 p-4 rounded-2xl bg-white border border-primary/20 shadow-sm backdrop-blur-md" data-aos="fade-up" data-aos-delay="80">
+            <div class="flex flex-wrap items-center justify-between gap-3">
+              <div class="flex items-center gap-3">
+                <div class="relative flex items-center justify-center w-9 h-9 rounded-xl bg-gradient-to-br from-primary/10 to-primary-container/20 text-primary">
+                  <span class="material-symbols-outlined text-xl">bolt</span>
+                  <span class="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-emerald-500 ring-2 ring-white animate-pulse" id="api-status-dot"></span>
+                </div>
+                <div>
+                  <div class="flex items-center gap-2">
+                    <span class="text-xs font-bold text-on-surface">QuickCommerce API</span>
+                    <span id="api-status-badge" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">v1 Ready</span>
+                    <span class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-primary/5 text-primary">Multi-Platform</span>
+                  </div>
+                  <div class="text-[11px] text-on-surface-muted flex items-center gap-1.5 mt-0.5">
+                    <span class="material-symbols-outlined text-xs text-primary">near_me</span>
+                    <span id="api-coords-display" class="font-medium">12.90, 77.66 (Bengaluru)</span>
+                    <span class="text-outline">·</span>
+                    <span class="text-secondary font-medium">Blinkit, Zepto, Instamart</span>
+                  </div>
+                </div>
+              </div>
+              <div class="flex items-center gap-2">
+                <!-- Live Search Toggle -->
+                <label class="flex items-center gap-2 cursor-pointer select-none text-xs font-semibold text-on-surface-muted bg-surface-dim px-3 py-1.5 rounded-xl border border-outline/30 hover:border-primary/40 transition-colors">
+                  <input type="checkbox" id="live-search-toggle" class="sr-only peer" checked>
+                  <div class="w-7 h-4 bg-outline rounded-full peer peer-checked:bg-primary transition-colors relative after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:after:translate-x-3"></div>
+                  <span>Live Search</span>
+                </label>
+                <!-- Configure API Key / Coordinates Trigger -->
+                <button id="open-api-modal-btn" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-primary text-white hover:bg-primary-container text-xs font-bold shadow-sm transition-all">
+                  <span class="material-symbols-outlined text-sm">tune</span>
+                  <span>API Settings</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Search -->
+          <div class="mb-4" data-aos="fade-up" data-aos-delay="100">
+            <div class="relative">
+              <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-muted" id="search-icon">search</span>
+              <input
+                type="text"
+                id="product-search"
+                placeholder="Search live inventory (e.g., milk, bread, eggs, diet coke)..."
+                class="w-full pl-12 pr-28 py-3.5 rounded-xl bg-white border border-outline/40 text-sm focus:outline-none focus:border-primary/60 focus:ring-2 focus:ring-primary/10 transition-all shadow-sm"
+                autocomplete="off"
+              >
+              <div class="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-1.5">
+                <span id="search-spinner" class="hidden material-symbols-outlined text-primary text-lg animate-spin">progress_activity</span>
+                <button id="clear-search-btn" class="hidden p-1 rounded-md text-on-surface-muted hover:text-on-surface" aria-label="Clear search">
+                  <span class="material-symbols-outlined text-sm">close</span>
+                </button>
+                <span class="text-[10px] font-bold px-2 py-0.5 rounded-md bg-surface-dim text-on-surface-muted border border-outline/30 uppercase tracking-wider">Live</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Search Chips -->
+          <div class="flex items-center gap-2 overflow-x-auto pb-2 mb-5 scrollbar-none text-xs" id="quick-search-chips" data-aos="fade-up" data-aos-delay="120">
+            <span class="text-on-surface-muted font-bold flex items-center gap-1 whitespace-nowrap text-[11px]"><span class="material-symbols-outlined text-sm text-primary">bolt</span> Quick:</span>
+            <button type="button" class="quick-chip px-3 py-1 rounded-full bg-white border border-outline/30 hover:border-primary text-on-surface hover:text-primary transition-colors whitespace-nowrap shadow-2xs" data-query="milk">🥛 Milk</button>
+            <button type="button" class="quick-chip px-3 py-1 rounded-full bg-white border border-outline/30 hover:border-primary text-on-surface hover:text-primary transition-colors whitespace-nowrap shadow-2xs" data-query="bread">🍞 Bread</button>
+            <button type="button" class="quick-chip px-3 py-1 rounded-full bg-white border border-outline/30 hover:border-primary text-on-surface hover:text-primary transition-colors whitespace-nowrap shadow-2xs" data-query="eggs">🥚 Eggs</button>
+            <button type="button" class="quick-chip px-3 py-1 rounded-full bg-white border border-outline/30 hover:border-primary text-on-surface hover:text-primary transition-colors whitespace-nowrap shadow-2xs" data-query="coke">🥤 Diet Coke</button>
+            <button type="button" class="quick-chip px-3 py-1 rounded-full bg-white border border-outline/30 hover:border-primary text-on-surface hover:text-primary transition-colors whitespace-nowrap shadow-2xs" data-query="maggi">🍜 Maggi</button>
+            <button type="button" class="quick-chip px-3 py-1 rounded-full bg-white border border-outline/30 hover:border-primary text-on-surface hover:text-primary transition-colors whitespace-nowrap shadow-2xs" data-query="chips">🥔 Lay's</button>
+            <button type="button" class="quick-chip px-3 py-1 rounded-full bg-white border border-outline/30 hover:border-primary text-on-surface hover:text-primary transition-colors whitespace-nowrap shadow-2xs" data-query="paneer">🧀 Paneer</button>
+            <button type="button" class="quick-chip px-3 py-1 rounded-full bg-white border border-outline/30 hover:border-primary text-on-surface hover:text-primary transition-colors whitespace-nowrap shadow-2xs" data-query="butter">🧈 Butter</button>
+          </div>
+
+          <!-- Category chips -->
+          <div class="flex flex-wrap gap-2 mb-6" id="category-chips" data-aos="fade-up" data-aos-delay="150">
+            <!-- Populated by JS -->
+          </div>
+
+          <!-- Product grid -->
+          <div class="grid sm:grid-cols-2 xl:grid-cols-3 gap-4" id="product-grid">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+
+        <!-- Sticky basket panel -->
+        <div class="lg:sticky lg:top-24" data-aos="fade-left">
+          <div class="bg-white rounded-2xl shadow-lg border border-outline/20 overflow-hidden" id="basket-panel">
+            <div class="p-5 border-b border-outline/20">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                  <span class="material-symbols-outlined text-primary">shopping_basket</span>
+                  <h3 class="font-bold">Your Basket</h3>
+                </div>
+                <div class="flex items-center gap-2">
+                  <span class="text-xs font-semibold text-on-surface-muted" id="basket-count-label" aria-live="polite">0 items</span>
+                  <span class="w-6 h-6 rounded-full bg-primary text-white text-xs font-bold flex items-center justify-center" id="basket-badge" aria-live="polite">0</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Basket items -->
+            <div class="p-4 max-h-[50vh] overflow-y-auto" id="basket-items-container">
+              <!-- Empty state -->
+              <div id="basket-empty" class="text-center py-10">
+                <svg class="w-16 h-16 mx-auto mb-4 empty-basket-float" viewBox="0 0 64 64" fill="none">
+                  <path d="M12 24 L8 52 a4 4 0 0 0 4 4 H52 a4 4 0 0 0 4-4 L52 24" stroke="#d4d4e8" stroke-width="2.5" fill="none"/>
+                  <path d="M20 24 L26 8 M44 24 L38 8" stroke="#d4d4e8" stroke-width="2.5" stroke-linecap="round"/>
+                  <path d="M24 34 v12 M32 34 v12 M40 34 v12" stroke="#e8e8f4" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+                <p class="text-sm font-semibold text-on-surface-muted mb-1">Your basket is empty</p>
+                <p class="text-xs text-on-surface-muted/70">Add products and we'll compare the rest.</p>
+              </div>
+
+              <!-- Basket rows -->
+              <div id="basket-rows" class="space-y-2 hidden"></div>
+            </div>
+
+            <!-- Free Delivery Tracker -->
+            <div id="free-delivery-tracker" class="px-5 py-3.5 border-t border-outline/20 bg-surface-dim/50 hidden">
+              <div class="flex items-center justify-between text-xs font-bold text-on-surface mb-2.5">
+                <span class="flex items-center gap-1.5">
+                  <span class="material-symbols-outlined text-base text-secondary">local_shipping</span>
+                  <span>Free Delivery Unlocks</span>
+                </span>
+                <span class="text-[10px] uppercase font-bold text-on-surface-muted bg-white px-2 py-0.5 rounded-full border border-outline/30">Live Fee Rules</span>
+              </div>
+              <div class="space-y-2" id="delivery-bars-container">
+                <!-- Platform progress bars rendered by JS -->
+              </div>
+            </div>
+
+            <!-- Basket footer -->
+            <div class="p-5 border-t border-outline/20 bg-surface/50" id="basket-footer" style="display:none">
+              <div class="flex items-center justify-between mb-1">
+                <span class="text-sm text-on-surface-muted">Estimated range</span>
+                <span class="text-sm font-bold" id="basket-range" aria-live="polite">—</span>
+              </div>
+              <div class="flex items-center justify-between mb-4">
+                <span class="text-xs text-on-surface-muted">Subtotal before fees</span>
+                <span class="text-xs text-on-surface-muted" id="basket-subtotal-hint">—</span>
+              </div>
+
+              <!-- Preset / Load -->
+              <div class="flex gap-2 mb-3">
+                <select id="preset-select" class="flex-1 px-3 py-2 rounded-lg border border-outline/40 text-xs bg-white focus:outline-none focus:border-primary/60">
+                  <option value="">Load a preset basket...</option>
+                </select>
+                <button id="load-preset-btn" class="px-3 py-2 rounded-lg border border-outline/40 text-xs font-semibold hover:bg-primary/5 transition-colors" aria-label="Load selected preset">Load</button>
+              </div>
+
+              <!-- Compare button -->
+              <button id="compare-btn" class="w-full relative overflow-hidden px-6 py-3.5 rounded-xl bg-gradient-to-r from-primary to-primary-container text-white font-bold text-sm shadow-md hover:shadow-lg transition-all magnetic-btn disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                <div class="relative z-10 flex items-center justify-center gap-2" id="compare-btn-content">
+                  <span class="material-symbols-outlined text-lg">compare_arrows</span>
+                  Compare Prices
+                </div>
+                <div class="absolute inset-0 bg-white/20 compare-progress-fill rounded-xl" id="compare-progress"></div>
+              </button>
+            </div>
+          </div>
+
+          <!-- Savings threshold -->
+          <div class="mt-3 bg-white rounded-xl p-3 border border-outline/20 text-xs" id="split-threshold-control" style="display:none">
+            <div class="flex items-center justify-between">
+              <label for="split-threshold" class="text-on-surface-muted font-medium">Min. split saving</label>
+              <div class="flex items-center gap-1">
+                <span>₹</span>
+                <input type="number" id="split-threshold" value="15" min="0" max="100" step="5" class="w-14 px-2 py-1 rounded-md border border-outline/40 text-center font-semibold focus:outline-none focus:border-primary/40">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== COMPARISON DASHBOARD ===== -->
+  <section id="dashboard-section" class="py-20 sm:py-28 bg-white" style="display: none;">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6">
+      <!-- Top bar -->
+      <div class="flex flex-wrap items-center justify-between gap-4 mb-10" data-aos="fade-down">
+        <div>
+          <div class="flex items-center gap-3 mb-1">
+            <h2 class="text-2xl sm:text-3xl font-extrabold">Comparison Dashboard</h2>
+            <span class="demo-badge">DEMO DATA</span>
+          </div>
+          <p class="text-sm text-on-surface-muted" id="dashboard-basket-info">5 products • 8 items • Ahmedabad 380015</p>
+        </div>
+        <a href="#catalog-section" class="text-sm text-primary font-semibold hover:underline">← Edit Basket</a>
+      </div>
+
+      <!-- Route scene canvas -->
+      <div class="mb-8 relative" data-aos="fade-up">
+        <div class="bg-white rounded-2xl shadow-md border border-outline/20 p-4">
+          <div class="flex items-center gap-2 mb-3">
+            <span class="material-symbols-outlined text-primary text-lg">map</span>
+            <span class="text-sm font-semibold">Live Routing Map</span>
+            <span class="demo-badge ml-auto">DEMO</span>
+          </div>
+          <div class="route-canvas-container" id="route-canvas-container">
+            <!-- Canvas inserted by route-scene.js -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Live Platform Dark-Store & SLA Radar -->
+      <div class="mb-8 grid sm:grid-cols-3 gap-4" data-aos="fade-up" id="platform-status-radar">
+        <!-- Blinkit -->
+        <div class="p-4 rounded-xl bg-white border border-outline/20 shadow-xs flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="w-9 h-9 rounded-lg bg-blinkit/15 flex items-center justify-center font-black" style="color:#f59e0b">B</div>
+            <div>
+              <div class="text-xs font-bold text-on-surface">Blinkit Dark Store</div>
+              <div class="text-[11px] text-on-surface-muted flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                <span>Live · 10 min SLA</span>
+              </div>
+            </div>
+          </div>
+          <span class="text-[11px] font-extrabold text-secondary px-2 py-0.5 rounded-md bg-secondary/10">Active</span>
+        </div>
+        <!-- Zepto -->
+        <div class="p-4 rounded-xl bg-white border border-outline/20 shadow-xs flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="w-9 h-9 rounded-lg bg-zepto/15 flex items-center justify-center font-black" style="color:#9333ea">Z</div>
+            <div>
+              <div class="text-xs font-bold text-on-surface">Zepto Micro-Hub</div>
+              <div class="text-[11px] text-on-surface-muted flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                <span>Live · 8 min SLA</span>
+              </div>
+            </div>
+          </div>
+          <span class="text-[11px] font-extrabold text-secondary px-2 py-0.5 rounded-md bg-secondary/10">Active</span>
+        </div>
+        <!-- Instamart -->
+        <div class="p-4 rounded-xl bg-white border border-outline/20 shadow-xs flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="w-9 h-9 rounded-lg bg-instamart/15 flex items-center justify-center font-black" style="color:#f97316">I</div>
+            <div>
+              <div class="text-xs font-bold text-on-surface">Swiggy Instamart Pod</div>
+              <div class="text-[11px] text-on-surface-muted flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                <span>Live · 12 min SLA</span>
+              </div>
+            </div>
+          </div>
+          <span class="text-[11px] font-extrabold text-secondary px-2 py-0.5 rounded-md bg-secondary/10">Active</span>
+        </div>
+      </div>
+
+      <!-- Mode tabs -->
+      <div class="flex justify-center mb-10">
+        <div class="relative inline-flex bg-surface-dim rounded-full p-1 border border-outline/20" id="mode-tabs">
+          <div class="tab-pill bg-primary" id="mode-pill"></div>
+          <button class="mode-tab relative z-10 px-5 py-2.5 rounded-full text-sm font-semibold transition-colors text-white" data-mode="cheapest" aria-pressed="true">
+            <span class="material-symbols-outlined text-base align-middle mr-1">savings</span>Cheapest
+          </button>
+          <button class="mode-tab relative z-10 px-5 py-2.5 rounded-full text-sm font-semibold transition-colors text-on-surface-muted" data-mode="fastest" aria-pressed="false">
+            <span class="material-symbols-outlined text-base align-middle mr-1">bolt</span>Fastest
+          </button>
+          <button class="mode-tab relative z-10 px-5 py-2.5 rounded-full text-sm font-semibold transition-colors text-on-surface-muted" data-mode="bestValue" aria-pressed="false">
+            <span class="material-symbols-outlined text-base align-middle mr-1">star</span>Best Value
+          </button>
+        </div>
+      </div>
+
+      <!-- Recommendation card -->
+      <div class="mb-10" data-aos="zoom-in-up">
+        <div class="bg-gradient-to-br from-secondary/5 via-secondary-container/10 to-primary/5 rounded-2xl p-6 sm:p-8 border border-secondary/20 relative overflow-hidden" id="recommendation-card">
+          <div class="flex items-center gap-2 mb-2">
+            <span class="material-symbols-outlined text-secondary filled">verified</span>
+            <span class="text-xs font-bold text-secondary uppercase tracking-wider">ShopMate Recommends</span>
+          </div>
+          <div class="flex flex-wrap items-end justify-between gap-4 mb-4">
+            <div>
+              <h3 class="text-2xl sm:text-3xl font-extrabold" id="rec-platform-name">Blinkit</h3>
+              <p class="text-sm text-on-surface-muted mt-1" id="rec-explanation">Lowest complete-basket cost</p>
+            </div>
+            <div class="text-right">
+              <div class="text-3xl sm:text-4xl font-extrabold text-secondary animate-num" id="rec-total">₹203</div>
+              <div class="text-sm text-on-surface-muted" id="rec-savings-text">Save ₹47 vs most expensive</div>
+            </div>
+          </div>
+          <div class="flex flex-wrap gap-3 mb-5" id="rec-meta">
+            <span class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-white/80 text-xs font-semibold">
+              <span class="material-symbols-outlined text-sm text-secondary">inventory_2</span>
+              <span id="rec-stock">4/4 available</span>
+            </span>
+            <span class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-white/80 text-xs font-semibold">
+              <span class="material-symbols-outlined text-sm text-primary">schedule</span>
+              <span id="rec-eta">10 min ETA</span>
+            </span>
+            <span class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-white/80 text-xs font-semibold">
+              <span class="material-symbols-outlined text-sm text-secondary">match_word</span>
+              <span>98% match</span>
+            </span>
+          </div>
+          <!-- Reasons -->
+          <div class="space-y-2 mb-6" id="rec-reasons">
+            <!-- Populated by JS -->
+          </div>
+          <div class="flex flex-wrap gap-3">
+            <button id="continue-btn" class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-secondary to-secondary/80 text-white font-bold text-sm shadow-md hover:shadow-lg transition-all magnetic-btn">
+              <span class="material-symbols-outlined text-lg">open_in_new</span>
+              Continue to <span id="continue-platform-name">Blinkit</span>
+            </button>
+            <button id="why-recommended-btn" class="inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-outline/40 text-sm font-semibold hover:bg-primary/5 transition-colors">
+              <span class="material-symbols-outlined text-lg">info</span>
+              Why this is recommended
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Platform cards -->
+      <div class="grid sm:grid-cols-3 gap-4 mb-10" id="platform-cards">
+        <!-- Populated by JS -->
+      </div>
+
+      <!-- Item-level comparison matrix -->
+      <div class="mb-10" data-aos="fade-up">
+        <h3 class="text-lg font-bold mb-4">Item-Level Comparison</h3>
+        <p class="text-xs text-on-surface-muted mb-4">Individual lowest prices do not determine the complete basket winner.</p>
+        <div class="bg-white rounded-xl border border-outline/20 overflow-x-auto">
+          <table class="w-full text-sm" id="comparison-matrix">
+            <thead>
+              <tr class="border-b border-outline/20">
+                <th class="text-left p-4 font-semibold text-on-surface-muted">Product</th>
+                <th class="text-center p-4 font-semibold" style="color:#f59e0b">Blinkit</th>
+                <th class="text-center p-4 font-semibold" style="color:#9333ea">Zepto</th>
+                <th class="text-center p-4 font-semibold" style="color:#f97316">Instamart</th>
+              </tr>
+            </thead>
+            <tbody id="matrix-body">
+              <!-- Populated by JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Fee scorecard -->
+      <div class="mb-10" data-aos="fade-up">
+        <h3 class="text-lg font-bold mb-4">Fee Scorecard</h3>
+        <div class="grid sm:grid-cols-3 gap-4" id="fee-scorecards">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+
+      <!-- Split module -->
+      <div class="mb-10" data-aos="flip-up" id="split-module">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FEATURES / STACKED SECTION ===== -->
+  <section id="features-section" class="bg-surface relative">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6">
+      <div class="text-center py-20" data-aos="fade-up">
+        <h2 class="text-3xl sm:text-4xl font-extrabold mb-3">More than price comparison.</h2>
+        <p class="text-on-surface-muted max-w-xl mx-auto">ShopMate turns fragmented prices into one smarter shopping decision.</p>
+      </div>
+    </div>
+
+    <!-- Stacked feature cards (GSAP ScrollTrigger driven) -->
+    <div class="feature-stack-section" id="feature-stack-container" style="height: 400vh;">
+      <div class="feature-stack-sticky">
+        <div class="feature-card-stack mx-4 sm:mx-6" id="feature-card-stack">
+          <!-- Card 1 -->
+          <div class="feature-card" data-feature="0" style="background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%);">
+            <span class="text-xs font-bold text-primary/60 tracking-wider uppercase mb-3">01 · Smart Basket Intelligence</span>
+            <h3 class="text-2xl sm:text-3xl font-extrabold mb-3">Compare the basket,<br>not just the item.</h3>
+            <p class="text-on-surface-muted mb-6">Multiple grocery items analyzed together → platform totals computed → optimized basket found.</p>
+            <div class="flex items-center gap-4 flex-wrap">
+              <div class="px-4 py-3 rounded-xl bg-white shadow-sm border border-outline/20 text-sm font-semibold">🥛 + 🥤 + 🍜 + 🥔</div>
+              <span class="material-symbols-outlined text-primary">arrow_forward</span>
+              <div class="px-4 py-3 rounded-xl bg-primary/10 text-primary text-sm font-bold">₹203 best total</div>
+            </div>
+          </div>
+          <!-- Card 2 -->
+          <div class="feature-card" data-feature="1" style="background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);">
+            <span class="text-xs font-bold text-secondary/60 tracking-wider uppercase mb-3">02 · True Cost Engine</span>
+            <h3 class="text-2xl sm:text-3xl font-extrabold mb-3">See what you'll<br>actually pay.</h3>
+            <p class="text-on-surface-muted mb-6">No hidden fees. Every charge broken down transparently.</p>
+            <div class="space-y-2 text-sm">
+              <div class="flex justify-between px-4 py-2 bg-white rounded-lg"><span>Items</span><span class="font-bold">₹193</span></div>
+              <div class="flex justify-between px-4 py-2 bg-white rounded-lg text-secondary"><span>Promo</span><span class="font-bold">−₹10</span></div>
+              <div class="flex justify-between px-4 py-2 bg-white rounded-lg"><span>Delivery</span><span class="font-bold">₹15</span></div>
+              <div class="flex justify-between px-4 py-2 bg-white rounded-lg"><span>Platform Fee</span><span class="font-bold">₹5</span></div>
+              <div class="flex justify-between px-4 py-2 bg-primary/10 rounded-lg font-bold"><span>Total</span><span class="text-primary">₹203</span></div>
+            </div>
+          </div>
+          <!-- Card 3 -->
+          <div class="feature-card" data-feature="2" style="background: linear-gradient(135deg, #fff7ed 0%, #fed7aa 100%);">
+            <span class="text-xs font-bold text-instamart/60 tracking-wider uppercase mb-3">03 · Location Awareness</span>
+            <h3 class="text-2xl sm:text-3xl font-extrabold mb-3">The right price depends<br>on where you are.</h3>
+            <p class="text-on-surface-muted mb-6">Availability, pricing, and delivery times can vary by location.</p>
+            <div class="flex items-center gap-3 flex-wrap">
+              <div class="px-4 py-3 rounded-xl bg-white shadow-sm border border-outline/20 text-sm"><span class="material-symbols-outlined text-base align-middle mr-1">location_on</span>Ahmedabad 380015</div>
+              <span class="material-symbols-outlined text-instamart">arrow_forward</span>
+              <div class="px-4 py-3 rounded-xl bg-white shadow-sm border border-outline/20 text-sm">📦 Stock ✓ &nbsp;⏱ 10 min &nbsp;💰 ₹203</div>
+            </div>
+          </div>
+          <!-- Card 4 -->
+          <div class="feature-card" data-feature="3" style="background: linear-gradient(135deg, #faf5ff 0%, #e9d5ff 100%);">
+            <span class="text-xs font-bold text-zepto/60 tracking-wider uppercase mb-3">04 · Smart Basket Split</span>
+            <h3 class="text-2xl sm:text-3xl font-extrabold mb-3">Sometimes the cheapest basket<br>lives in two apps.</h3>
+            <p class="text-on-surface-muted mb-6">We test every combination and tell you if splitting saves real money.</p>
+            <div class="flex items-center gap-3 flex-wrap">
+              <div class="px-3 py-2 rounded-lg bg-blinkit/10 text-xs font-semibold" style="color:#f59e0b">Blinkit: 3 items ₹165</div>
+              <span class="text-lg">+</span>
+              <div class="px-3 py-2 rounded-lg bg-zepto/10 text-xs font-semibold" style="color:#9333ea">Zepto: 2 items ₹122</div>
+              <span class="text-lg">=</span>
+              <div class="px-3 py-2 rounded-lg bg-secondary/10 text-xs font-bold text-secondary">Save ₹34</div>
+            </div>
+          </div>
+          <!-- Card 5 -->
+          <div class="feature-card" data-feature="4" style="background: linear-gradient(135deg, #f0fdf4 0%, #bbf7d0 100%);">
+            <span class="text-xs font-bold text-secondary/60 tracking-wider uppercase mb-3">05 · Price History</span>
+            <h3 class="text-2xl sm:text-3xl font-extrabold mb-3">Know whether today's deal<br>is actually a deal.</h3>
+            <p class="text-on-surface-muted mb-6">Track illustrative price trends to make smarter decisions.</p>
+            <div class="bg-white rounded-xl p-4 shadow-sm border border-outline/20">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-semibold">Diet Coke 300 ml</span>
+                <span class="demo-badge text-[9px]">ILLUSTRATIVE</span>
+              </div>
+              <svg viewBox="0 0 200 60" class="w-full h-14">
+                <path class="sparkline-path" d="M10 45 L40 40 L70 35 L100 42 L130 30 L160 25 L190 20" fill="none" stroke="#5323e6" stroke-width="2"/>
+                <circle class="sparkline-dot" cx="190" cy="20" r="4" fill="#5323e6"/>
+              </svg>
+              <div class="flex justify-between text-xs text-on-surface-muted mt-1">
+                <span>7 days ago</span>
+                <span class="price-pill-pop font-bold text-secondary">↓ 15% cheaper</span>
+              </div>
+            </div>
+          </div>
+          <!-- Card 6 -->
+          <div class="feature-card" data-feature="5" style="background: linear-gradient(135deg, #fefce8 0%, #fde68a 100%);">
+            <span class="text-xs font-bold text-warning/60 tracking-wider uppercase mb-3">06 · Personalized Shopping</span>
+            <h3 class="text-2xl sm:text-3xl font-extrabold mb-3">Remember what<br>matters to you.</h3>
+            <p class="text-on-surface-muted mb-6">Set your preferences and get tailored recommendations.</p>
+            <div class="space-y-2">
+              <div class="flex items-center gap-3 px-4 py-2 bg-white rounded-lg text-sm"><span class="material-symbols-outlined text-base text-primary">favorite</span> Preferred Brand: <strong>Amul</strong></div>
+              <div class="flex items-center gap-3 px-4 py-2 bg-white rounded-lg text-sm"><span class="material-symbols-outlined text-base text-primary">schedule</span> Max ETA: <strong>15 min</strong></div>
+              <div class="flex items-center gap-3 px-4 py-2 bg-white rounded-lg text-sm"><span class="material-symbols-outlined text-base text-primary">call_split</span> Min Split Saving: <strong>₹30</strong></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== HOW IT WORKS ===== -->
+  <section id="how-it-works" class="py-20 sm:py-28 bg-white">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6">
+      <div class="text-center mb-16" data-aos="fade-up">
+        <h2 class="text-3xl sm:text-4xl font-extrabold mb-3">How ShopMate works</h2>
+        <p class="text-on-surface-muted">Three simple steps to the smartest grocery order.</p>
+      </div>
+
+      <div class="space-y-12">
+        <div class="flex items-start gap-6" data-aos="fade-up">
+          <div class="step-number">01</div>
+          <div>
+            <h3 class="text-xl font-bold mb-2">Build your basket</h3>
+            <p class="text-on-surface-muted">Search and add products just like any grocery app. Set quantities, pick sizes.</p>
+          </div>
+        </div>
+        <div class="flex items-start gap-6" data-aos="fade-up" data-aos-delay="150">
+          <div class="step-number">02</div>
+          <div>
+            <h3 class="text-xl font-bold mb-2">ShopMate compares</h3>
+            <p class="text-on-surface-muted">We match every product across platforms, calculate true costs with all fees, and test every possible split combination.</p>
+          </div>
+        </div>
+        <div class="flex items-start gap-6" data-aos="fade-up" data-aos-delay="300">
+          <div class="step-number">03</div>
+          <div>
+            <h3 class="text-xl font-bold mb-2">Make the smarter choice</h3>
+            <p class="text-on-surface-muted">See the winner. Understand why. Continue to the platform and order with confidence.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== TRUST SECTION ===== -->
+  <section id="trust-section" class="py-20 sm:py-28 bg-surface">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6">
+      <div class="text-center mb-12" data-aos="fade-up">
+        <h2 class="text-3xl sm:text-4xl font-extrabold mb-3">We show the math.</h2>
+        <p class="text-on-surface-muted max-w-xl mx-auto">No mystery totals. No hidden recommendation logic.</p>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-8 items-center">
+        <div data-aos="fade-right">
+          <div class="bg-white rounded-2xl p-6 shadow-md border border-outline/20">
+            <h3 class="font-bold mb-4">Transparent Calculation</h3>
+            <div class="space-y-3 text-sm">
+              <div class="flex justify-between py-2 border-b border-outline/10"><span class="text-on-surface-muted">Item subtotal</span><span class="font-bold">₹193</span></div>
+              <div class="flex justify-between py-2 border-b border-outline/10"><span class="text-on-surface-muted">Promo discount</span><span class="font-bold text-secondary">−₹10</span></div>
+              <div class="flex justify-between py-2 border-b border-outline/10"><span class="text-on-surface-muted">Delivery fee</span><span class="font-bold">₹15</span></div>
+              <div class="flex justify-between py-2 border-b border-outline/10"><span class="text-on-surface-muted">Platform fee</span><span class="font-bold">₹5</span></div>
+              <div class="flex justify-between py-3 bg-secondary/5 rounded-lg px-3 -mx-3"><span class="font-bold">Estimated total</span><span class="font-extrabold text-secondary text-lg">₹203</span></div>
+            </div>
+          </div>
+        </div>
+        <div data-aos="fade-left">
+          <div class="space-y-4">
+            <div class="bg-white rounded-xl p-5 shadow-sm border border-outline/20">
+              <div class="flex items-center gap-2 mb-2">
+                <span class="material-symbols-outlined text-primary text-lg">match_word</span>
+                <span class="font-bold text-sm">Product Matching</span>
+              </div>
+              <p class="text-xs text-on-surface-muted">ShopMate checks brand, product, variant and pack size before comparing offers.</p>
+            </div>
+            <div class="bg-white rounded-xl p-5 shadow-sm border border-outline/20">
+              <div class="flex items-center gap-2 mb-2">
+                <span class="material-symbols-outlined text-primary text-lg">equalizer</span>
+                <span class="font-bold text-sm">Whole-Basket Logic</span>
+              </div>
+              <p class="text-xs text-on-surface-muted">The cheapest individual product may not be part of the cheapest basket. Fees, promos and thresholds change the math.</p>
+            </div>
+            <div class="bg-white rounded-xl p-5 shadow-sm border border-outline/20">
+              <span class="demo-badge mb-2 inline-flex">DEMO DATA</span>
+              <p class="text-xs text-on-surface-muted">All values in this prototype are illustrative. Platform integrations are not connected.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SAVED BASKETS ===== -->
+  <section id="saved-section" class="py-20 sm:py-28 bg-white">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6">
+      <div class="text-center mb-12" data-aos="fade-up">
+        <h2 class="text-3xl sm:text-4xl font-extrabold mb-3">Your Saved Baskets</h2>
+        <p class="text-on-surface-muted">Quick-load your regular orders and compare again instantly.</p>
+      </div>
+
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4" id="saved-baskets-grid">
+        <!-- Populated by JS -->
+      </div>
+
+      <div id="saved-empty" class="text-center py-10 hidden">
+        <span class="material-symbols-outlined text-4xl text-outline mb-3">bookmark_border</span>
+        <p class="text-sm text-on-surface-muted">No saved baskets yet. Compare a basket and save it for next time.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FINAL CTA ===== -->
+  <section id="final-cta" class="py-20 sm:py-28 bg-gradient-to-br from-primary via-primary-container to-primary relative overflow-hidden">
+    <div class="absolute inset-0 opacity-10">
+      <div class="absolute inset-0" style="background-image: radial-gradient(circle at 30% 50%, rgba(255,255,255,0.2) 0%, transparent 50%);"></div>
+    </div>
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 text-center relative z-10" data-aos="fade-up">
+      <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white mb-4">Stop checking three apps.</h2>
+      <p class="text-white/80 text-lg mb-8">Build your basket once. Let ShopMate compare the rest.</p>
+      <a href="#catalog-section" class="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-white text-primary font-bold text-base shadow-xl hover:shadow-2xl transition-all magnetic-btn">
+        <span class="material-symbols-outlined">shopping_basket</span>
+        Compare My Basket
+      </a>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="py-12 bg-on-surface text-white/70" data-aos="fade-up">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-6 mb-8">
+        <div>
+          <div class="flex items-center gap-2 mb-2">
+            <div class="w-7 h-7 rounded-lg bg-gradient-to-br from-primary to-primary-container flex items-center justify-center">
+              <span class="material-symbols-outlined text-white text-sm">shopping_basket</span>
+            </div>
+            <span class="text-base font-extrabold text-white">Shop<span class="text-primary-container">Mate</span></span>
+          </div>
+          <p class="text-xs">One Basket. Every App. Best Price.</p>
+        </div>
+        <nav class="flex flex-wrap gap-6 text-sm">
+          <a href="#catalog-section" class="hover:text-white transition-colors">Compare</a>
+          <a href="#how-it-works" class="hover:text-white transition-colors">How It Works</a>
+          <a href="#features-section" class="hover:text-white transition-colors">Features</a>
+          <a href="#saved-section" class="hover:text-white transition-colors">Saved Baskets</a>
+        </nav>
+      </div>
+      <div class="border-t border-white/10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <p class="text-xs text-center sm:text-left">Prototype uses illustrative demo data. Platform integrations are not connected in this demo.</p>
+        <span class="demo-badge">DEMO DATA</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ===== MODALS ===== -->
+
+  <!-- Location Modal -->
+  <div id="location-modal" class="modal-backdrop" role="dialog" aria-label="Select location" aria-modal="true">
+    <div class="modal-content p-6">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="text-lg font-bold">Where are you shopping?</h3>
+        <button class="modal-close-btn p-1 rounded-lg hover:bg-surface-dim" aria-label="Close"><span class="material-symbols-outlined">close</span></button>
+      </div>
+      <p class="text-sm text-on-surface-muted mb-5">Availability, pricing, fees and delivery times can vary by location.</p>
+      <div class="space-y-3" id="location-options">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Checkout Handoff Modal -->
+  <div id="handoff-modal" class="modal-backdrop" role="dialog" aria-label="Continue to platform" aria-modal="true">
+    <div class="modal-content p-6">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="text-lg font-bold">Ready to continue?</h3>
+        <button class="modal-close-btn p-1 rounded-lg hover:bg-surface-dim" aria-label="Close"><span class="material-symbols-outlined">close</span></button>
+      </div>
+      <div id="handoff-content">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Why Recommended Drawer -->
+  <div id="why-drawer-backdrop" class="drawer-backdrop">
+    <div id="why-drawer" class="drawer-panel p-6" role="dialog" aria-label="Why this is recommended">
+      <div class="flex items-center justify-between mb-6">
+        <h3 class="text-lg font-bold">Why this is recommended</h3>
+        <button id="why-drawer-close" class="p-1 rounded-lg hover:bg-surface-dim" aria-label="Close"><span class="material-symbols-outlined">close</span></button>
+      </div>
+      <div id="why-drawer-content">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Price History Drawer -->
+  <div id="history-drawer-backdrop" class="drawer-backdrop">
+    <div id="history-drawer" class="drawer-panel p-6" role="dialog" aria-label="Price history">
+      <div class="flex items-center justify-between mb-6">
+        <h3 class="text-lg font-bold">Price History</h3>
+        <button id="history-drawer-close" class="p-1 rounded-lg hover:bg-surface-dim" aria-label="Close"><span class="material-symbols-outlined">close</span></button>
+      </div>
+      <div id="history-drawer-content">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- QuickCommerce API Configuration Modal -->
+  <div id="api-config-modal" class="modal-backdrop" role="dialog" aria-label="QuickCommerce API Settings" aria-modal="true">
+    <div class="modal-content p-6 sm:p-7 max-w-lg">
+      <div class="flex items-center justify-between mb-4">
+        <div class="flex items-center gap-2.5">
+          <div class="w-9 h-9 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
+            <span class="material-symbols-outlined">bolt</span>
+          </div>
+          <div>
+            <h3 class="text-lg font-extrabold text-on-surface">QuickCommerce API</h3>
+            <p class="text-xs text-on-surface-muted">Live Dark Store & Multi-Platform Connector</p>
+          </div>
+        </div>
+        <button class="modal-close-btn p-1.5 rounded-lg hover:bg-surface-dim transition-colors" aria-label="Close">
+          <span class="material-symbols-outlined text-lg">close</span>
+        </button>
+      </div>
+
+      <!-- Endpoint Pill -->
+      <div class="mb-4 p-3 rounded-xl bg-surface-dim border border-outline/30 text-xs font-mono text-on-surface-muted flex items-center justify-between">
+        <span class="truncate">GET https://api.quickcommerceapi.com/v1/search</span>
+        <span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded bg-emerald-100 text-emerald-800">CORS OK</span>
+      </div>
+
+      <div class="space-y-4 text-sm">
+        <!-- API Key input -->
+        <div>
+          <div class="flex items-center justify-between mb-1.5">
+            <label for="qc-api-key" class="text-xs font-bold text-on-surface">X-API-Key</label>
+            <span class="text-[11px] text-on-surface-muted">Header or ?api_key=</span>
+          </div>
+          <div class="relative">
+            <input
+              type="password"
+              id="qc-api-key"
+              placeholder="sk_live_..."
+              class="w-full pl-3 pr-10 py-2.5 rounded-xl border border-outline/40 text-sm font-mono focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
+              autocomplete="off"
+            >
+            <button type="button" id="toggle-key-visibility" class="absolute right-2.5 top-1/2 -translate-y-1/2 text-on-surface-muted hover:text-on-surface p-1">
+              <span class="material-symbols-outlined text-lg" id="key-vis-icon">visibility</span>
+            </button>
+          </div>
+          <p class="text-[11px] text-on-surface-muted mt-1">Pass your live API key to connect directly to dark store feeds.</p>
+        </div>
+
+        <!-- Coordinates (lat / lon) -->
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label for="qc-lat" class="block text-xs font-bold text-on-surface mb-1">Latitude (lat)</label>
+            <input
+              type="number"
+              id="qc-lat"
+              step="0.0001"
+              value="12.90"
+              class="w-full px-3 py-2 rounded-xl border border-outline/40 text-sm font-mono focus:outline-none focus:border-primary"
+            >
+          </div>
+          <div>
+            <label for="qc-lon" class="block text-xs font-bold text-on-surface mb-1">Longitude (lon)</label>
+            <input
+              type="number"
+              id="qc-lon"
+              step="0.0001"
+              value="77.66"
+              class="w-full px-3 py-2 rounded-xl border border-outline/40 text-sm font-mono focus:outline-none focus:border-primary"
+            >
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between">
+          <button type="button" id="use-gps-btn" class="inline-flex items-center gap-1.5 text-xs font-semibold text-primary hover:underline">
+            <span class="material-symbols-outlined text-sm">my_location</span>
+            Detect My Device Location
+          </button>
+          <span class="text-xs text-on-surface-muted">Default: 12.90, 77.66 (Bengaluru)</span>
+        </div>
+
+        <!-- Platforms -->
+        <div>
+          <label class="block text-xs font-bold text-on-surface mb-1.5">Supported Platforms</label>
+          <div class="flex flex-wrap gap-2 text-xs">
+            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-blinkit/10 text-blinkit font-bold border border-blinkit/20">
+              <span class="w-2 h-2 rounded-full bg-blinkit"></span>
+              Blinkit
+            </span>
+            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-zepto/10 text-zepto font-bold border border-zepto/20">
+              <span class="w-2 h-2 rounded-full bg-zepto"></span>
+              Zepto
+            </span>
+            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-instamart/10 text-instamart font-bold border border-instamart/20">
+              <span class="w-2 h-2 rounded-full bg-instamart"></span>
+              Instamart
+            </span>
+          </div>
+        </div>
+
+        <!-- Test Connection & Ping Box -->
+        <div class="pt-2 border-t border-outline/20">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-xs font-bold text-on-surface">Connection Diagnostics</span>
+            <button type="button" id="test-qc-api-btn" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-secondary text-white text-xs font-bold shadow-xs hover:bg-secondary/90 transition-all">
+              <span class="material-symbols-outlined text-sm" id="test-api-spinner">network_check</span>
+              Test Connection
+            </button>
+          </div>
+
+          <div id="api-test-result" class="p-3 rounded-xl bg-surface-dim border border-outline/20 text-xs font-mono text-on-surface-muted min-h-[50px] flex items-center justify-center text-center">
+            Click "Test Connection" to ping quickcommerceapi.com
+          </div>
+        </div>
+
+        <!-- Sample curl snippet with copy button -->
+        <div>
+          <div class="flex items-center justify-between mb-1">
+            <span class="text-[11px] font-bold uppercase tracking-wider text-on-surface-muted">Curl Command</span>
+            <button type="button" id="copy-curl-btn" class="text-[11px] text-primary hover:underline font-semibold flex items-center gap-1">
+              <span class="material-symbols-outlined text-xs">content_copy</span>
+              Copy curl
+            </button>
+          </div>
+          <pre class="p-2.5 rounded-lg bg-on-surface text-white/90 text-[11px] font-mono overflow-x-auto whitespace-pre-wrap" id="curl-preview-code">curl -H "X-API-Key: sk_live_..." \
+  "https://api.quickcommerceapi.com/v1/search?q=milk&platform=BlinkIt&lat=12.90&lon=77.66"</pre>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-end gap-3 mt-6 pt-4 border-t border-outline/20">
+        <button type="button" class="modal-close-btn px-4 py-2 rounded-xl text-xs font-semibold text-on-surface-muted hover:bg-surface-dim transition-colors">
+          Cancel
+        </button>
+        <button type="button" id="save-qc-api-btn" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-primary to-primary-container text-white text-xs font-bold shadow-md hover:shadow-lg transition-all">
+          Save Settings
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast container -->
+  <div class="toast-container" id="toast-container" aria-live="polite"></div>
+
+  <!-- Mobile basket sticky bar -->
+  <div id="mobile-basket-bar" class="fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-outline/30 px-4 py-3 shadow-lg lg:hidden" style="display:none">
+    <a href="#catalog-section" class="flex items-center justify-center gap-2 w-full px-6 py-3 rounded-xl bg-gradient-to-r from-primary to-primary-container text-white font-bold text-sm">
+      <span class="material-symbols-outlined text-lg">shopping_basket</span>
+      View Basket • <span id="mobile-basket-count">0</span> items
+    </a>
+  </div>
+
+  <!-- ===== SCRIPTS ===== -->
+  <script type="module" src="js/ui.js?v=3"></script>
+  <script type="module" src="js/motion.js?v=3"></script>
+  <script type="module" src="js/scenes/hero-scene.js?v=3"></script>
+  <script type="module" src="js/scenes/route-scene.js?v=3"></script>
+</body>
+</html>
